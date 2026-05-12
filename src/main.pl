@@ -134,7 +134,7 @@ discard_pile(DeckLama, KartuTerbuang, DeckBaru) :-
     panjang(DeckLama, L),
     lcg(L, Indeks),
     ambil_elemen(Indeks, DeckLama, kartu(Warna, Tipe), DeckSisa),
-    (is_aksi(Tipe) -> write('Kartu discard yang terambil top adalah kartu aksi, mengambil ulang...'), nl,
+    (is_aksi(Tipe) -> write('Kartu discard top yang terambil adalah kartu aksi, mengambil ulang...'), nl,
     discard_pile([kartu(Warna, Tipe)|DeckSisa], KartuTerbuang, DeckBaru)
     ;   
     KartuTerbuang = kartu(Warna, Tipe),
