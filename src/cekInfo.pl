@@ -10,7 +10,7 @@ printplayer(DaftarAcak, 1).
 printplayer([Pemain| SisaPemain], X):-
 format('Nama pemain ~w: ~w', [X,Pemain]),
 tangan(Pemain, Index),
-hitung_elemen(index, Jumlah),
+hitung_elemen(Index, Jumlah),
 format('Jumlah kartu: ~w', [Jumlah]),
 X1 is X+1,
 printplayer(SisaPemain, X1).
@@ -21,5 +21,6 @@ format('kartu discard top: ~w', [Pile]),
 daftarAcak(DaftarAcak),
 format('Urutan pemain:~w' [DaftarAcak]),
 printplayer(DaftarAcak).
+giliran(Turn),
 
 
