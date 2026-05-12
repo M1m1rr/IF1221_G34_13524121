@@ -1,5 +1,6 @@
 /* ==========        Rules       ========== */
-
+:- include('ambilKartu.pl').
+:- include('lihatKartu.pl').
 /* ==========   1. Start Game    ========== */
 
 startGame :-
@@ -21,9 +22,6 @@ startGame :-
 mainkanKartu :-
     write('Kartu dimainkan!').
 
-ambilKartu :-
-    write('Kartu diambil!').
-
 tantang :-
     format('~w ditantang!', []).
 
@@ -38,9 +36,6 @@ tangkap :-
 lihatCommand :-
     write('Tersedia: anukan').
 
-lihatKartu :-
-    write('Belum nyampe').
-
 cekInfo :-
     write('cemara menderai sampai jauh').
 
@@ -51,8 +46,6 @@ saveGame :-
 
 loadGame :-
     write('Loaded!').
-
-
 
 /* ==========   Buat Sendiri    ==========*/
 inputPlayerkeN(0) :- !.
@@ -70,6 +63,10 @@ inputPlayerkeN(N) :-
 
 /* ==========       Dinamik     ========== */
 :- dynamic(pemain/1).
+:- dynamic(giliran/1).
+:- dynamic(tangan/2).
+:- dynamic(draw_pile/1).
+:- dynamic(efek_aktif/1).
 /* ==========        Facts      ========== */
 
 kartu(merah, angka(0)).
@@ -132,5 +129,5 @@ kartu(hijau, draw_two).
 kartu(biru, draw_two).
 
 kartu(hitam, wild).
-kartu(hitam, draw_four).
-
+kartu(hitam, wild_draw_four).
+kartu(hitam, mimic).
