@@ -5,8 +5,8 @@ hitung_elemen([_|Tail], Jumlah) :-
 
 
 printplayer([], _).
-printplayer(Urutan):-
-printplayer(Urutan, 1).
+printplayer(DaftarAcak):-
+printplayer(DaftarAcak, 1).
 printplayer([Pemain| SisaPemain], X):-
 format('Nama pemain ~w: ~w', [X,Pemain]),
 tangan(Pemain, Index),
@@ -18,8 +18,8 @@ printplayer(SisaPemain, X1).
 cekInfo:-
 draw_pile(Pile),
 format('kartu discard top: ~w', [Pile]),
-urutan(Urutan),
-format('urutan pemain:~w' [Urutan]),
-printplayer(Urutan).
+daftarAcak(DaftarAcak),
+format('Urutan pemain:~w' [DaftarAcak]),
+printplayer(DaftarAcak).
 
 
