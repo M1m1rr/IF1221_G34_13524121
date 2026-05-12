@@ -1,12 +1,14 @@
 /* ==========        Rules       ========== */
 :- dynamic(data_pemain/1).
 :- dynamic(seed/1).
+:- dynamic(urutan_pemain/1).
 
 seed(123456789). 
 
 startGame :-
     retractall(data_pemain(_)),
     retractall(seed(_)), assertz(seed(123456789)),
+    retractall(urutan_pemain(_)),
 
     write('======================================='), nl,
     write('======== Anu Uni Anukan Uninya ========'), nl,
@@ -21,6 +23,7 @@ startGame :-
     input_pemain(1, ValidN), nl,
     pindahkan_ke_list(DaftarAsli),
     acak_pemain(DaftarAsli, DaftarAcak),
+    assertz(urutan_pemain(DaftarAcak)),
     
     DaftarAcak = [PemainPertama|_],
     write('Urutan pemain: '), nl,
