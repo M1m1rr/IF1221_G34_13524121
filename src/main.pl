@@ -44,7 +44,6 @@ startGame :-
     write('U  N  I !!!'), !.
 
 panjang([], 0).
-% Jika ada isi, hitung ekornya (T) lalu tambah 1
 panjang([_|T], L) :-
     panjang(T, L_Sisa),
     L is L_Sisa + 1.
