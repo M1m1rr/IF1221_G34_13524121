@@ -34,6 +34,8 @@ startGame :-
     bagikan_kartu(DaftarAcak, DeckAwal, DeckSisaSetelahBagi),
 
     discard_pile(DeckSisaSetelahBagi, DiscardAwal, DeckFinal),
+    assertz(sisa_deck(DeckFinal)),
+    assertz(efek_aktif(none)),
     format('Kartu di meja (Discard Pile): ~w', [DiscardAwal]), nl,
     panjang(DeckFinal, SisaTotal),
     format('Sisa kartu di dalam deck: ~d', [SisaTotal]), nl,nl,
@@ -202,9 +204,15 @@ inputPlayerkeN(N) :-
 /* ==========       Dinamik     ========== */
 :- dynamic(pemain/1).
 :- dynamic(giliran/1).
-:- dynamic(tangan/2).
 :- dynamic(draw_pile/1).
 :- dynamic(efek_aktif/1).
+:- dynamic(data_pemain/1).
+:- dynamic(urutan_pemain/1).
+:- dynamic(seed/1).
+:- dynamic(temp_deck/2).
+:- dynamic(simpan_kartu_pemain/2).
+:- dynamic(discard_pile/1).
+:- dynamic(sisa_deck/1).
 /* ==========        Facts      ========== */
 
 kartu(merah, angka(0)).

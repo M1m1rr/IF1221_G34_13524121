@@ -1,6 +1,6 @@
 lihatKartu :-
-    giliran(Pemain),
-    tangan(Pemain, Tangan),
+    urutan_pemain([Pemain|_]),
+    simpan_kartu_pemain(Pemain, Tangan),
     write('Berikut kartu yang anda miliki.'), nl,
     printTangan(Tangan, 1).
 

@@ -1,4 +1,3 @@
-
 cek( [], _).
 cek([Kepala|Sisa], Kartumeja):-
  cocok(Kepala, Kartumeja), !.
@@ -24,7 +23,5 @@ tantang:-
     cocok(Pile, kartu(hitam, draw_four)),
     draw-1_pile(Kartumeja),
     urutan_pemain(DaftarAcak),
-    format('memeriksa kartu ~w' [Pemain]),*/anggap a pemain udh ganti ke pemain sebelumnya*/
+    format('memeriksa kartu ~w' [Pemain]), 
     cekkartu(DaftarAcak, Kartumeja).
-
-

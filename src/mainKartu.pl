@@ -1,13 +1,15 @@
-
 putar_list(Input, Hasil) :-
     rekursi_putar(Input, [], Hasil).
+
 rekursi_putar([], Accumulator, Accumulator).
 rekursi_putar([H|T], Accumulator, Hasil) :-
     rekursi_putar(T, [H|Accumulator], Hasil).
+
 cocok(kartu(Warna, _), kartu(Warna, _)) :- !.
 cocok(kartu(_, Sama), kartu(_, Sama)):- !.
 cocok(kartu(hitam, _), kartu(_, _)):-!.
-efek(kartu,(_, skip)):-
+
+efek(kartu(_, skip)):-
     write('pemain berikutnya kehilangan giliran'), 
     nextturn,
     nextturn,!.
@@ -32,8 +34,8 @@ efek(kartu(_,reverse)):-
     nextturn,!.
 
 efek(_):-
-    nextturn,!
-.
+    nextturn,!.
+
 mainkanKartu(Index) :-
     giliran(Pemain),
     efek_aktif(Efek),
@@ -44,12 +46,9 @@ mainkanKartu(Index) :-
     select(Kartupemain, Indekskartu, Indekskartu1 ),
     retract(tangan(Pemain, Indekskartu)),
     assertz(tangan(Pemain, Indekskartu1)),
-    assertz(draw-1_pile(Kartumeja)),
+    assertz(draw_pile(Kartumeja)),
     retract(draw_pile(Kartumeja)),
     assertz(draw_pile(Kartupemain)),
     format('~w memainkan kartu: ~w', [Pemain], [Kartupemain]),
     urutan_pemain(DaftarAcak),
     efek(Kartupemain).
-
-
-
