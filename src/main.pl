@@ -38,7 +38,7 @@ startGame :-
     panjang(DeckFinal, SisaTotal),
     format('Sisa kartu di dalam deck: ~d', [SisaTotal]), nl,nl,
 
-    format('Giliran ~w', [PemainPertama]), nl, nl, giliran_berikutnya,
+    format('Giliran ~w', [PemainPertama]), nl, nl, nextTurn,
     
     write('1 '), write('2 '), write('3 . . .'), nl,
     write('U  N  I !!!'), !.
@@ -146,7 +146,7 @@ append_element([], Element, Element).
 append_element([Head|Tail], Element, [Head|NewTail]) :-
     append_element(Tail, Element, NewTail).
 
-giliran_berikutnya :-
+nextTurn :-
     retract(urutan_pemain([PemainSekarang | PemainLainnya])),    
     append_element(PemainLainnya, [PemainSekarang], UrutanBaru),
     assertz(urutan_pemain(UrutanBaru)),
