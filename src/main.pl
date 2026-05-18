@@ -1,9 +1,7 @@
 /* ==========        Rules       ========== */
-:- dynamic(data_pemain/1).
-:- dynamic(seed/1).
-:- dynamic(urutan_pemain/1).
-
-seed(123456789). 
+:- include('ambilKartu.pl').
+:- include('lihatKartu.pl').
+/* ==========   1. Start Game    ========== */
 
 startGame :-
     retractall(data_pemain(_)),
@@ -162,9 +160,6 @@ giliran_berikutnya :-
 mainkanKartu :-
     write('Kartu dimainkan!').
 
-ambilKartu :-
-    write('Kartu diambil!').
-
 tantang :-
     format('~w ditantang!', []).
 
@@ -179,9 +174,6 @@ tangkap :-
 lihatCommand :-
     write('Tersedia: anukan').
 
-lihatKartu :-
-    write('Belum nyampe').
-
 cekInfo :-
     write('cemara menderai sampai jauh').
 
@@ -193,6 +185,26 @@ saveGame :-
 loadGame :-
     write('Loaded!').
 
+/* ==========   Buat Sendiri    ==========*/
+inputPlayerkeN(0) :- !.
+inputPlayerkeN(N) :-
+    N > 0,
+    format('Nama pemain ke-~w ', [N]),
+    read(Nama),
+    (pemain(Nama) -> 
+        format('Hei ~w! main cuma bisa 1 kali!.~n~n', [Nama]),
+        inputPlayerkeN(N)
+    ; 
+        assertz(pemain(Nama)),
+        N1 is N - 1,
+        inputPlayerkeN(N1)).
+
+/* ==========       Dinamik     ========== */
+:- dynamic(pemain/1).
+:- dynamic(giliran/1).
+:- dynamic(tangan/2).
+:- dynamic(draw_pile/1).
+:- dynamic(efek_aktif/1).
 /* ==========        Facts      ========== */
 
 kartu(merah, angka(0)).
@@ -255,4 +267,5 @@ kartu(hijau, draw_two).
 kartu(biru, draw_two).
 
 kartu(hitam, wild).
-kartu(hitam, draw_four).
+kartu(hitam, wild_draw_four).
+kartu(hitam, mimic).
