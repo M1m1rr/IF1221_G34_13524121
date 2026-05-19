@@ -3,6 +3,7 @@
 :- include('lihatKartu.pl').
 :- include('cekInfo.pl').
 :- include('mainKartu.pl').
+:- include('tantang.pl').
 /* ==========   1. Start Game    ========== */
 
 startGame :-
@@ -160,9 +161,6 @@ giliran_berikutnya :-
 
 
 /* ==========        Turn       ========== */
-
-tantang :-
-    format('~w ditantang!', []).
 
 uni :-
     write('Uni!').
