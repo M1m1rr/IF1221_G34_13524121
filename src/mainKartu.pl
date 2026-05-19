@@ -9,30 +9,30 @@ cocok(kartu(_, Sama), kartu(_, Sama)):- !.
 cocok(kartu(hitam, _), kartu(_, _)):-!.
 efek(kartu,(_, skip)):-
     write('pemain berikutnya kehilangan giliran'), 
-    nextturn,
-    nextturn,!.
+    nextTurn,
+    nextTurn,!.
 efek(kartu(_, draw_two)):-
     write('pemain berikutnya terkena draw 2'), 
-    nextturn,
+    nextTurn,
     ambilKartu,
     ambilKartu,
-    nextturn,!.
+    nextTurn,!.
 efek(kartu(_,draw_four)):-
     write('pemain berikutnya terkena draw 4'),
     ambilKartu,
     ambilKartu,
     ambilKartu,
     ambilKartu,
-    nextturn, !.
+    nextTurn, !.
 efek(kartu(_,reverse)):-
     write('order pemain terbalik'), 
     putar_list(DaftarAcak, DaftarAcak1),
     retract(urutan_pemain(DaftarAcak)),
     assertz(urutan_pemain(DaftarAcak1)).
-    nextturn,!.
+    nextTurn,!.
 
 efek(_):-
-    nextturn,!
+    nextTurn,!
 .
 mainkanKartu(Index) :-
     giliran(Pemain),
@@ -44,7 +44,7 @@ mainkanKartu(Index) :-
     select(Kartupemain, Indekskartu, Indekskartu1 ),
     retract(tangan(Pemain, Indekskartu)),
     assertz(tangan(Pemain, Indekskartu1)),
-    assertz(draw-1_pile(Kartumeja)),
+    assertz(draw_pile(Kartumeja)),
     retract(draw_pile(Kartumeja)),
     assertz(draw_pile(Kartupemain)),
     format('~w memainkan kartu: ~w', [Pemain], [Kartupemain]),
