@@ -27,10 +27,11 @@ startGame :-
     tampilkan_pemain(DaftarAcak), nl,
 
     temp_kartu,
-    kumpulkan_deck(DeckAwal),
+    kumpulkan_deck(Deck_urut),
+    acak_deck(Deck_urut, Deck_acak),
 
     write('--- Membagikan Kartu ---'), nl, 
-    bagikan_kartu(DaftarAcak, DeckAwal, DeckSisaSetelahBagi),
+    bagikan_kartu(DaftarAcak, Deck_acak, DeckSisaSetelahBagi),
 
     discard_pile(DeckSisaSetelahBagi, DiscardAwal, DeckFinal),
     format('Kartu di meja (Discard Pile): ~w', [DiscardAwal]), nl,
@@ -61,6 +62,14 @@ acak_pemain(Asli, [Terpilih|SisaAcak]) :-
     lcg(L, Indeks),
     ambil_elemen(Indeks, Asli, Terpilih, SisaAsli),
     acak_pemain(SisaAsli, SisaAcak).
+
+/* Kocok deck kartu menggunakan LCG */
+acak_deck([], []).
+acak_deck(Asli, [Terpilih | SisaAcak]) :-
+    panjang(Asli, L),
+    lcg(L, Indeks),
+    ambil_elemen(Indeks, Asli, Terpilih, SisaAsli),
+    acak_deck(SisaAsli, SisaAcak).
 
 ambil_elemen(0, [H|T], H, T) :- !.
 ambil_elemen(I, [H|T], Terpilih, [H|Sisa]) :-
