@@ -151,15 +151,31 @@ append_element([], Element, Element).
 append_element([Head|Tail], Element, [Head|NewTail]) :-
     append_element(Tail, Element, NewTail).
 
+
+pisahkan_terakhir([X], X, []) :- !.
+pisahkan_terakhir([H|T], Terakhir, [H|Sisa]) :-
+    pisahkan_terakhir(T, Terakhir, Sisa).
+
 giliran_berikutnya :-
+    arah(kanan),
     retract(urutan_pemain([PemainSekarang | PemainLainnya])),    
     append_element(PemainLainnya, [PemainSekarang], UrutanBaru),
     assertz(urutan_pemain(UrutanBaru)),
     UrutanBaru = [PemainSelanjutnya | _],
     format('Giliran ~w telah selesai.', [PemainSekarang]), nl,
-    format('Sekarang giliran: ~w!', [PemainSelanjutnya]), nl.
+    format('Sekarang giliran: ~w!', [PemainSelanjutnya]), nl, !.
 
 
+
+giliran_berikutnya :-
+    arah(kiri),
+    retract(urutan_pemain(ListLama)),
+    pisahkan_terakhir(ListLama, PemainSelanjutnya, SisaPemain),
+    UrutanBaru = [PemainSelanjutnya | SisaPemain],
+    assertz(urutan_pemain(UrutanBaru)),
+    ListLama = [PemainSekarang | _],
+    format('Giliran ~w telah selesai.', [PemainSekarang]), nl,
+    format('Sekarang giliran: ~w!', [PemainSelanjutnya]), nl, !.
 /* ==========        Turn       ========== */
 
 uni :-
@@ -208,6 +224,8 @@ inputPlayerkeN(N) :-
 :- dynamic(discard_pile/1).
 :- dynamic(sisa_deck/1).
 :- dynamic(format/1).
+:- dynamic(kartu_efek/1).
+:- dynamic(arah/1).
 /* ==========        Facts      ========== */
 
 kartu(merah, angka(0)).
@@ -272,3 +290,4 @@ kartu(biru, draw_two).
 kartu(hitam, wild).
 kartu(hitam, wild_draw_four).
 kartu(hitam, mimic).
+arah(kanan).
