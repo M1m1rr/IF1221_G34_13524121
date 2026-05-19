@@ -34,7 +34,8 @@ lihatCommand :-
     status_game(normal), !,
     write('Aksi utama yang tersedia:'), nl,
     write('1. ambilKartu'), nl, 
-    write('2. tangkap(NamaPemain)'), nl, nl,
+    write('2. uni(NomorUrutKartuDiTangan)'), nl,
+    write('3. tangkap(NamaPemain)'), nl, nl,
     aksi_pendukung.
 
 aksi_pendukung :-
