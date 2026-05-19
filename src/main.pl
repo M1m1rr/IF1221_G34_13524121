@@ -1,6 +1,8 @@
 /* ==========        Rules       ========== */
 :- include('ambilKartu.pl').
 :- include('lihatKartu.pl').
+:- include('cekInfo.pl').
+:- include('mainKartu.pl').
 /* ==========   1. Start Game    ========== */
 
 startGame :-
@@ -159,9 +161,6 @@ giliran_berikutnya :-
 
 /* ==========        Turn       ========== */
 
-mainkanKartu :-
-    write('Kartu dimainkan!').
-
 tantang :-
     format('~w ditantang!', []).
 
@@ -175,9 +174,6 @@ tangkap :-
 
 lihatCommand :-
     write('Tersedia: anukan').
-
-cekInfo :-
-    write('cemara menderai sampai jauh').
 
 /* ==========     End Game    ========== */
 
@@ -213,6 +209,7 @@ inputPlayerkeN(N) :-
 :- dynamic(simpan_kartu_pemain/2).
 :- dynamic(discard_pile/1).
 :- dynamic(sisa_deck/1).
+:- dynamic(format/1).
 /* ==========        Facts      ========== */
 
 kartu(merah, angka(0)).
