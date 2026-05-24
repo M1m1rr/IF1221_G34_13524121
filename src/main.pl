@@ -4,6 +4,8 @@
 :- include('cekInfo.pl').
 :- include('mainKartu.pl').
 :- include('tantang.pl').
+:- include('endGame.pl').
+:- include('helper.pl').
 /* ==========   1. Start Game    ========== */
 
 startGame :-
@@ -156,6 +158,10 @@ pisahkan_terakhir([X], X, []) :- !.
 pisahkan_terakhir([H|T], Terakhir, [H|Sisa]) :-
     pisahkan_terakhir(T, Terakhir, Sisa).
 
+
+giliran_berikutnya :-
+    simpan_kartu_pemain(_, []), !,
+    endGame.
 giliran_berikutnya :-
     arah(kanan),
     retract(urutan_pemain([PemainSekarang | PemainLainnya])),    
@@ -164,9 +170,6 @@ giliran_berikutnya :-
     UrutanBaru = [PemainSelanjutnya | _],
     format('Giliran ~w telah selesai.', [PemainSekarang]), nl,
     format('Sekarang giliran: ~w!', [PemainSelanjutnya]), nl, !.
-
-
-
 giliran_berikutnya :-
     arah(kiri),
     retract(urutan_pemain(ListLama)),

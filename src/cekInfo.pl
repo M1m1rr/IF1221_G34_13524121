@@ -1,7 +1,4 @@
-hitung_elemen([], 0).
-hitung_elemen([_|Tail], Jumlah) :-
-    hitung_elemen(Tail, Jumlah_Sisa),
-    Jumlah is Jumlah_Sisa + 1.
+
 
 tampilkan_pemain([], _).
 tampilkan_pemain([Pemain | SisaPemain], X) :-
@@ -14,15 +11,22 @@ tampilkan_pemain([Pemain | SisaPemain], X) :-
     X1 is X + 1,
     tampilkan_pemain(SisaPemain, X1).
 
+cetak_urutan(_, [Pemain]) :- 
+    format(Pemain), nl, !.
+cetak_urutan(_ , []):- !.
+cetak_urutan(kanan, [Pemain | Sisa]) :-
+    write(Pemain), 
+    write(' -> '),
+    cetak_urutan(kanan, Sisa).
+
+cetak_urutan(kiri, [Pemain | Sisa]) :-
+    write(Pemain), write(' <- '),
+    cetak_urutan(kiri, Sisa).
+
 cekInfo:-
     (discard_pile(Pile) -> format('Kartu discard top: ~w~n', [Pile]) ; format('Pile kosong~n', [])),
-    (arah(kanan)->
-        write('arah mengikurti jarum jam(kiri ke kanan)')
-    ;
-        write('arah melawan jarum jam(kanan ke kiri)')    
-    ),
-    (urutan_pemain(DaftarAcak) -> 
-        format('Urutan pemain: ~w~n', [DaftarAcak]),
-        tampilkan_pemain(DaftarAcak, 1)
-    ;   write('Daftar pemain tidak ditemukan~n')
-    ).
+    arah(Arah),
+    urutan_pemain(DaftarAcak),
+    cetak_urutan(Arah, DaftarAcak),
+    tampilkan_pemain(DaftarAcak, 1).
+  
