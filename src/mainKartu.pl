@@ -13,15 +13,7 @@ list_warna(X, [_|T]) :-
 
 
 
-cari_kartu_ke(1, [H|_], H) :- !.
-cari_kartu_ke(Index, [_|T], Hasil) :-
-    Index > 1,
-    IndexSisa is Index - 1,
-    cari_kartu_ke(IndexSisa, T, Hasil).
 
-hapus_kartu(X, [X|T], T) :- !.
-hapus_kartu(X, [H|T], [H|T1]) :-
-    hapus_kartu(X, T, T1).
 
 cocok(kartu(Warna, _), kartu(Warna, _)) :- !.
 cocok(kartu(_, Sama), kartu(_, Sama)):- !.
@@ -44,17 +36,16 @@ efek(kartu(_, skip)):-
     write('pemain berikutnya kehilangan giliran'), 
    retract(urutan_pemain([PemainSekarang | PemainLainnya])),    
     append_element(PemainLainnya, [PemainSekarang], UrutanBaru),
-    UrutanBaru = [PemainSelanjutnya | _],
     assertz(urutan_pemain(UrutanBaru)),
     giliran_berikutnya, !.
 efek(kartu(_, draw_two)):-
     write('pemain berikutnya terkena draw 2.~n'), 
-    retractall(efek_aktif(Efek)),
+    retractall(efek_aktif(_)),
     assertz(efek_aktif(draw_two)),
     giliran_berikutnya,!.
 efek(kartu(_,wild_draw_four)):-
     write('pemain berikutnya terkena draw 4.~n'),
-    retractall(efek_aktif(Efek)),
+    retractall(efek_aktif(_)),
     assertz(efek_aktif(wild_draw_four)),
     write('Pilih warna baru (merah/kuning/hijau/biru): '),
     read(Input),
