@@ -43,13 +43,9 @@ startGame :-
     panjang(DeckFinal, SisaTotal),
     format('Sisa kartu di dalam deck: ~d', [SisaTotal]), nl,nl,
 
-    format('Giliran ~w', [PemainPertama]), nl, nl, giliran_berikutnya,
-    
-    write('1 '), write('2 '), write('3 . . .'), nl,
-    write('U  N  I !!!'), !.
+    format('Giliran ~w, silahkan masukkan perintah!', [PemainPertama]), nl, !.
 
 panjang([], 0).
-% Jika ada isi, hitung ekornya (T) lalu tambah 1
 panjang([_|T], L) :-
     panjang(T, L_Sisa),
     L is L_Sisa + 1.
@@ -151,7 +147,7 @@ append_element([], Element, Element).
 append_element([Head|Tail], Element, [Head|NewTail]) :-
     append_element(Tail, Element, NewTail).
 
-giliran_berikutnya :-
+nextTurn :-
     retract(urutan_pemain([PemainSekarang | PemainLainnya])),    
     append_element(PemainLainnya, [PemainSekarang], UrutanBaru),
     assertz(urutan_pemain(UrutanBaru)),
@@ -196,7 +192,7 @@ inputPlayerkeN(N) :-
         inputPlayerkeN(N1)).
 
 /* ==========       Dinamik     ========== */
-:- dynamic(pemain/1).
+:- dynamic(data_pemain/1).
 :- dynamic(giliran/1).
 :- dynamic(draw_pile/1).
 :- dynamic(efek_aktif/1).
