@@ -33,10 +33,11 @@ startGame :-
     tampilkan_pemain(DaftarAcak), nl,
 
     temp_kartu,
-    kumpulkan_deck(DeckAwal),
+    kumpulkan_deck(Deck_urut),
+    acak_deck(Deck_urut, Deck_acak),
 
     write('--- Membagikan Kartu ---'), nl, 
-    bagikan_kartu(DaftarAcak, DeckAwal, DeckSisaSetelahBagi),
+    bagikan_kartu(DaftarAcak, Deck_acak, DeckSisaSetelahBagi),
 
     discard_pile(DeckSisaSetelahBagi, DiscardAwal, DeckFinal),
     assertz(sisa_deck(DeckFinal)),
@@ -45,13 +46,9 @@ startGame :-
     panjang(DeckFinal, SisaTotal),
     format('Sisa kartu di dalam deck: ~d', [SisaTotal]), nl,nl,
 
-    format('Giliran ~w', [PemainPertama]), nl, nl, giliran_berikutnya,
-    
-    write('1 '), write('2 '), write('3 . . .'), nl,
-    write('U  N  I !!!'), !.
+    format('Giliran ~w, silahkan masukkan perintah!', [PemainPertama]), nl, !.
 
 panjang([], 0).
-% Jika ada isi, hitung ekornya (T) lalu tambah 1
 panjang([_|T], L) :-
     panjang(T, L_Sisa),
     L is L_Sisa + 1.
@@ -69,6 +66,14 @@ acak_pemain(Asli, [Terpilih|SisaAcak]) :-
     lcg(L, Indeks),
     ambil_elemen(Indeks, Asli, Terpilih, SisaAsli),
     acak_pemain(SisaAsli, SisaAcak).
+
+/* Kocok deck kartu menggunakan LCG */
+acak_deck([], []).
+acak_deck(Asli, [Terpilih | SisaAcak]) :-
+    panjang(Asli, L),
+    lcg(L, Indeks),
+    ambil_elemen(Indeks, Asli, Terpilih, SisaAsli),
+    acak_deck(SisaAsli, SisaAcak).
 
 ambil_elemen(0, [H|T], H, T) :- !.
 ambil_elemen(I, [H|T], Terpilih, [H|Sisa]) :-
@@ -215,7 +220,7 @@ inputPlayerkeN(N) :-
         inputPlayerkeN(N1)).
 
 /* ==========       Dinamik     ========== */
-:- dynamic(pemain/1).
+:- dynamic(data_pemain/1).
 :- dynamic(giliran/1).
 :- dynamic(draw_pile/1).
 :- dynamic(efek_aktif/1).
