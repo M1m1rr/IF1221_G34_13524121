@@ -6,7 +6,7 @@ hitung_elemen([_|Tail], Jumlah) :-
 tampilkan_pemain([], _).
 tampilkan_pemain([Pemain | SisaPemain], X) :-
     format('Nama pemain ~w: ~w~n', [X, Pemain]), 
-    (tangan(Pemain, Index) -> 
+    (simpan_kartu_pemain(Pemain, Index) -> 
         hitung_elemen(Index, Jumlah),
         format('Jumlah kartu: ~w~n', [Jumlah])
     ;   format('Jumlah kartu: 0 (Tidak ada kartu)~n', [])
@@ -15,9 +15,14 @@ tampilkan_pemain([Pemain | SisaPemain], X) :-
     tampilkan_pemain(SisaPemain, X1).
 
 cekInfo:-
-    (draw_pile(Pile) -> format('Kartu discard top: ~w~n', [Pile]) ; format('Pile kosong~n', [])),
+    (discard_pile(Pile) -> format('Kartu discard top: ~w~n', [Pile]) ; format('Pile kosong~n', [])),
+    (arah(kanan)->
+        write('arah mengikurti jarum jam(kiri ke kanan)')
+    ;
+        write('arah melawan jarum jam(kanan ke kiri)')    
+    ),
     (urutan_pemain(DaftarAcak) -> 
         format('Urutan pemain: ~w~n', [DaftarAcak]),
-        tampilkan_pemain(DaftarAcak)
+        tampilkan_pemain(DaftarAcak, 1)
     ;   write('Daftar pemain tidak ditemukan~n')
     ).

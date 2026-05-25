@@ -1,3 +1,18 @@
+kartu_aksi(kartu(_, skip)).
+kartu_aksi(kartu(_, draw_two)).
+kartu_aksi(kartu(_, wild_draw_four)).
+kartu_aksi(kartu(_, reverse)).
+kartu_aksi(kartu(_, wild)).
+
+list_warna(X, [X|_]) :- !.
+list_warna(X, [_|T]) :-
+    list_warna(X, T).
+
+
+
+
+
+
 cari_kartu_ke(1, [H|_], H) :- !.
 cari_kartu_ke(Index, [_|T], Hasil) :-
     Index > 1,
@@ -8,36 +23,72 @@ hapus_kartu(X, [X|T], T) :- !.
 hapus_kartu(X, [H|T], [H|T1]) :-
     hapus_kartu(X, T, T1).
 
-putar_list(Input, Hasil) :-
-    rekursi_putar(Input, [], Hasil).
-rekursi_putar([], Accumulator, Accumulator).
-rekursi_putar([H|T], Accumulator, Hasil) :-
-    rekursi_putar(T, [H|Accumulator], Hasil).
 cocok(kartu(Warna, _), kartu(Warna, _)) :- !.
 cocok(kartu(_, Sama), kartu(_, Sama)):- !.
 cocok(kartu(hitam, _), kartu(_, _)):-!.
+
+efek(kartu(_, wild)):-
+    write('Pilih warna baru (merah/kuning/hijau/biru): '),
+    read(Input),
+    (list_warna(Input, [merah, kuning, hijau, biru]) -> 
+        Warna = Input,
+        format('Warna diubah menjadi ~w.~n', [Warna])
+    ; 
+        write('Warna tidak valid!'), nl, efek(kartu(_, wild))
+    ),
+    retract(discard_pile(_)),
+    assertz(discard_pile(kartu(Warna, wild))),
+    giliran_berikutnya, !.
+
 efek(kartu(_, skip)):-
     write('pemain berikutnya kehilangan giliran'), 
    retract(urutan_pemain([PemainSekarang | PemainLainnya])),    
     append_element(PemainLainnya, [PemainSekarang], UrutanBaru),
     UrutanBaru = [PemainSelanjutnya | _],
     assertz(urutan_pemain(UrutanBaru)),
-    giliran_berikutnya.
-efek(kartu(_, draw_two)):
-    write('pemain berikutnya terkena draw 2'), 
-   assertz(efek_aktif(draw_two)),
+    giliran_berikutnya, !.
+efek(kartu(_, draw_two)):-
+    write('pemain berikutnya terkena draw 2.~n'), 
+    retractall(efek_aktif(Efek)),
+    assertz(efek_aktif(draw_two)),
     giliran_berikutnya,!.
-efek(kartu(_,draw_four)):-
-    write('pemain berikutnya terkena draw 4'),
-   assertz(efek_aktif(draw_four)),
+efek(kartu(_,wild_draw_four)):-
+    write('pemain berikutnya terkena draw 4.~n'),
+    retractall(efek_aktif(Efek)),
+    assertz(efek_aktif(wild_draw_four)),
+    write('Pilih warna baru (merah/kuning/hijau/biru): '),
+    read(Input),
+    (list_warna(Input, [merah, kuning, hijau, biru]) -> 
+        Warna = Input,
+        format('Warna diubah menjadi ~w.~n', [Warna])
+    ; 
+        write('Warna tidak valid!'), nl, efek(kartu(_, wild))
+    ),
+    retract(discard_pile(_)),
+    assertz(discard_pile(kartu(Warna, wild_draw_four))),
     giliran_berikutnya, !.
 efek(kartu(_,reverse)):-
     write('order pemain terbalik'), 
-    urutan_pemain(DaftarAcak),
-    putar_list(DaftarAcak, DaftarAcak1),
-    retract(urutan_pemain(DaftarAcak)),
-    assertz(urutan_pemain(DaftarAcak1)),
-    giliran_berikutnya,!.
+    (retract(arah(kanan)) -> 
+        assertz(arah(kiri))
+    ; 
+        retract(arah(kiri)),
+        assertz(arah(kanan))
+    ),
+    giliran_berikutnya, !.
+   
+efek(kartu(_, mimic)):-
+    (kartu_efek(Kartu)->
+        format('kartu mimic menyalin efek ~w.~n', [Kartu]),
+        retract(discard_pile(_)),
+        assertz(discard_pile(Kartu)),
+
+        efek(Kartu)
+    ;
+        efek(kartu(hitam, wild))
+    ).
+    
+
 
 efek(_):-
     giliran_berikutnya,!
@@ -48,6 +99,12 @@ mainkanKartu(Index) :-
     cari_kartu_ke(Index, Indekskartu, Kartupemain ), 
     discard_pile(Kartumeja),
     cocok(Kartupemain, Kartumeja),
+    (kartu_aksi(Kartupemain)->
+        retractall(kartu_efek(_)),
+        assertz(kartu_efek(Kartupemain))
+    ;
+        true
+    ),
     hapus_kartu(Kartupemain, Indekskartu, Indekskartu1 ),
     retract(simpan_kartu_pemain(Pemain, Indekskartu)),
     assertz(simpan_kartu_pemain(Pemain, Indekskartu1)),
