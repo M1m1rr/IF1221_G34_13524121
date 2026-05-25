@@ -3,7 +3,6 @@
 :- include('lihatKartu.pl').
 :- include('cekInfo.pl').
 :- include('mainKartu.pl').
-:- include('tantang.pl').
 /* ==========   1. Start Game    ========== */
 
 startGame :-
@@ -37,6 +36,8 @@ startGame :-
     bagikan_kartu(DaftarAcak, DeckAwal, DeckSisaSetelahBagi),
 
     discard_pile(DeckSisaSetelahBagi, DiscardAwal, DeckFinal),
+    assertz(sisa_deck(DeckFinal)),
+    assertz(efek_aktif(none)),
     format('Kartu di meja (Discard Pile): ~w', [DiscardAwal]), nl,
     panjang(DeckFinal, SisaTotal),
     format('Sisa kartu di dalam deck: ~d', [SisaTotal]), nl,nl,
@@ -154,14 +155,57 @@ nextTurn :-
     format('Sekarang giliran: ~w!', [PemainSelanjutnya]), nl.
 
 
+/* ==========        Turn       ========== */
+
+tantang :-
+    format('~w ditantang!', []).
+
+uni :-
+    write('Uni!').
+
+tangkap :-
+    write('tangkap').
+
+/* ==========     Misc       ========== */
+
+lihatCommand :-
+    write('Tersedia: anukan').
+
+/* ==========     End Game    ========== */
+
+saveGame :-
+    write('Saved!').
+
+loadGame :-
+    write('Loaded!').
+
+/* ==========   Buat Sendiri    ==========*/
+inputPlayerkeN(0) :- !.
+inputPlayerkeN(N) :-
+    N > 0,
+    format('Nama pemain ke-~w ', [N]),
+    read(Nama),
+    (pemain(Nama) -> 
+        format('Hei ~w! main cuma bisa 1 kali!.~n~n', [Nama]),
+        inputPlayerkeN(N)
+    ; 
+        assertz(pemain(Nama)),
+        N1 is N - 1,
+        inputPlayerkeN(N1)).
 
 /* ==========       Dinamik     ========== */
 :- dynamic(data_pemain/1).
 :- dynamic(giliran/1).
-:- dynamic(tangan/2).
 :- dynamic(draw_pile/1).
 :- dynamic(efek_aktif/1).
-
+:- dynamic(data_pemain/1).
+:- dynamic(urutan_pemain/1).
+:- dynamic(seed/1).
+:- dynamic(temp_deck/2).
+:- dynamic(simpan_kartu_pemain/2).
+:- dynamic(discard_pile/1).
+:- dynamic(sisa_deck/1).
+:- dynamic(format/1).
 /* ==========        Facts      ========== */
 
 kartu(merah, angka(0)).
