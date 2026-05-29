@@ -7,7 +7,7 @@ tantang :-
     (adaKartuCocok(TanganPelaku, Warna, TipeDiscard)
         ->format('Tantangan berhasil! ~w mendapatkan 4 kartu.~n', [Pelaku]),
         drawN(Pelaku, 4, _),
-        detract(efek_aktif(_)),
+        retract(efek_aktif(_)),
         assertz(efek_aktif(none)),
         giliran_berikutnya
         ;format('Tantangan gagal! ~w mendapatkan 6 kartu.~n', [Penantang]),

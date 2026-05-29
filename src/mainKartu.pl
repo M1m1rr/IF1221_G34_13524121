@@ -33,11 +33,22 @@ efek(kartu(_, wild)):-
     giliran_berikutnya, !.
 
 efek(kartu(_, skip)):-
-    write('pemain berikutnya kehilangan giliran'), 
-   retract(urutan_pemain([PemainSekarang | PemainLainnya])),    
-    append_element(PemainLainnya, [PemainSekarang], UrutanBaru),
+    efek(kartu(_, skip)):-
+    arah(Arah),
+    retract(urutan_pemain(UrutanLama)),
+    (Arah == kanan ->
+        UrutanLama = [PemainSekarang | PemainLainnya],
+        append_element(PemainLainnya, [PemainSekarang], UrutanBaru)
+    ;
+        pisahkan_terakhir(UrutanLama, Terakhir, Sisa),
+        UrutanBaru = [Terakhir | Sisa]
+    ),
     assertz(urutan_pemain(UrutanBaru)),
+    UrutanBaru = [PemainDiSkip | _],
+    format('Pemain ~w kehilangan giliran!~n', [PemainDiSkip]),
     giliran_berikutnya, !.
+/* aku rombak skip ya ucup*/
+
 efek(kartu(_, draw_two)):-
     write('pemain berikutnya terkena draw 2.~n'), 
     retractall(efek_aktif(_)),
