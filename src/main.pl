@@ -4,6 +4,8 @@
 :- include('cekInfo.pl').
 :- include('mainKartu.pl').
 :- include('tantang.pl').
+:- include('endGame.pl').
+:- include('helper.pl').
 /* ==========   1. Start Game    ========== */
 
 startGame :-
@@ -31,12 +33,15 @@ startGame :-
     tampilkan_pemain(DaftarAcak), nl,
 
     temp_kartu,
-    kumpulkan_deck(DeckAwal),
+    kumpulkan_deck(Deck_urut),
+    acak_deck(Deck_urut, Deck_acak),
 
     write('--- Membagikan Kartu ---'), nl, 
-    bagikan_kartu(DaftarAcak, DeckAwal, DeckSisaSetelahBagi),
+    bagikan_kartu(DaftarAcak, Deck_acak, DeckSisaSetelahBagi),
 
     discard_pile(DeckSisaSetelahBagi, DiscardAwal, DeckFinal),
+    assertz(sisa_deck(DeckFinal)),
+    assertz(efek_aktif(none)),
     format('Kartu di meja (Discard Pile): ~w', [DiscardAwal]), nl,
     panjang(DeckFinal, SisaTotal),
     format('Sisa kartu di dalam deck: ~d', [SisaTotal]), nl,nl,
@@ -61,6 +66,14 @@ acak_pemain(Asli, [Terpilih|SisaAcak]) :-
     lcg(L, Indeks),
     ambil_elemen(Indeks, Asli, Terpilih, SisaAsli),
     acak_pemain(SisaAsli, SisaAcak).
+
+/* Kocok deck kartu menggunakan LCG */
+acak_deck([], []).
+acak_deck(Asli, [Terpilih | SisaAcak]) :-
+    panjang(Asli, L),
+    lcg(L, Indeks),
+    ambil_elemen(Indeks, Asli, Terpilih, SisaAsli),
+    acak_deck(SisaAsli, SisaAcak).
 
 ambil_elemen(0, [H|T], H, T) :- !.
 ambil_elemen(I, [H|T], Terpilih, [H|Sisa]) :-
@@ -145,23 +158,82 @@ append_element([], Element, Element).
 append_element([Head|Tail], Element, [Head|NewTail]) :-
     append_element(Tail, Element, NewTail).
 
-nextTurn :-
+
+pisahkan_terakhir([X], X, []) :- !.
+pisahkan_terakhir([H|T], Terakhir, [H|Sisa]) :-
+    pisahkan_terakhir(T, Terakhir, Sisa).
+
+
+giliran_berikutnya :-
+    simpan_kartu_pemain(_, []), !,
+    endGame.
+giliran_berikutnya :-
+    arah(kanan),
     retract(urutan_pemain([PemainSekarang | PemainLainnya])),    
     append_element(PemainLainnya, [PemainSekarang], UrutanBaru),
     assertz(urutan_pemain(UrutanBaru)),
     UrutanBaru = [PemainSelanjutnya | _],
     format('Giliran ~w telah selesai.', [PemainSekarang]), nl,
-    format('Sekarang giliran: ~w!', [PemainSelanjutnya]), nl.
+    format('Sekarang giliran: ~w!', [PemainSelanjutnya]), nl, !.
+giliran_berikutnya :-
+    arah(kiri),
+    retract(urutan_pemain(ListLama)),
+    pisahkan_terakhir(ListLama, PemainSelanjutnya, SisaPemain),
+    UrutanBaru = [PemainSelanjutnya | SisaPemain],
+    assertz(urutan_pemain(UrutanBaru)),
+    ListLama = [PemainSekarang | _],
+    format('Giliran ~w telah selesai.', [PemainSekarang]), nl,
+    format('Sekarang giliran: ~w!', [PemainSelanjutnya]), nl, !.
+/* ==========        Turn       ========== */
 
+uni :-
+    write('Uni!').
 
+tangkap :-
+    write('tangkap').
+
+/* ==========     Misc       ========== */
+
+lihatCommand :-
+    write('Tersedia: anukan').
+
+/* ==========     End Game    ========== */
+
+saveGame :-
+    write('Saved!').
+
+loadGame :-
+    write('Loaded!').
+
+/* ==========   Buat Sendiri    ==========*/
+inputPlayerkeN(0) :- !.
+inputPlayerkeN(N) :-
+    N > 0,
+    format('Nama pemain ke-~w ', [N]),
+    read(Nama),
+    (pemain(Nama) -> 
+        format('Hei ~w! main cuma bisa 1 kali!.~n~n', [Nama]),
+        inputPlayerkeN(N)
+    ; 
+        assertz(pemain(Nama)),
+        N1 is N - 1,
+        inputPlayerkeN(N1)).
 
 /* ==========       Dinamik     ========== */
 :- dynamic(data_pemain/1).
 :- dynamic(giliran/1).
-:- dynamic(tangan/2).
 :- dynamic(draw_pile/1).
 :- dynamic(efek_aktif/1).
-
+:- dynamic(data_pemain/1).
+:- dynamic(urutan_pemain/1).
+:- dynamic(seed/1).
+:- dynamic(temp_deck/2).
+:- dynamic(simpan_kartu_pemain/2).
+:- dynamic(discard_pile/1).
+:- dynamic(sisa_deck/1).
+:- dynamic(format/1).
+:- dynamic(kartu_efek/1).
+:- dynamic(arah/1).
 /* ==========        Facts      ========== */
 
 kartu(merah, angka(0)).
@@ -226,3 +298,4 @@ kartu(biru, draw_two).
 kartu(hitam, wild).
 kartu(hitam, wild_draw_four).
 kartu(hitam, mimic).
+arah(kanan).
