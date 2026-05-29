@@ -8,13 +8,6 @@ list_warna(X, [X|_]) :- !.
 list_warna(X, [_|T]) :-
     list_warna(X, T).
 
-
-
-
-
-
-
-
 cocok(kartu(Warna, _), kartu(Warna, _)) :- !.
 cocok(kartu(_, Sama), kartu(_, Sama)):- !.
 cocok(kartu(hitam, _), kartu(_, _)):-!.
@@ -33,7 +26,6 @@ efek(kartu(_, wild)):-
     giliran_berikutnya, !.
 
 efek(kartu(_, skip)):-
-    efek(kartu(_, skip)):-
     arah(Arah),
     retract(urutan_pemain(UrutanLama)),
     (Arah == kanan ->
