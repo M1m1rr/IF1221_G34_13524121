@@ -5,22 +5,19 @@
 :- include('cekInfo.pl').
 :- include('mainKartu.pl').
 :- include('tantang.pl').
-<<<<<<< Updated upstream
-=======
 :- include('endGame.pl').
 :- include('helper.pl').
 :- include('gameSaveLoad.pl').
 :- include('godsHand.pl').
 :- include('sembunyiKartu.pl').
 
-
->>>>>>> Stashed changes
 /* ==========   1. Start Game    ========== */
 
 startGame :-
     retractall(data_pemain(_)),
     retractall(seed(_)), assertz(seed(123456789)),
     retractall(urutan_pemain(_)),
+    retractall(arah(_)), assertz(arah(kanan)),
 
     write('======================================='), nl,
     write('======== Anu Uni Anukan Uninya ========'), nl,
@@ -51,12 +48,7 @@ startGame :-
     format('Kartu di meja (Discard Pile): ~w', [DiscardAwal]), nl,
     panjang(DeckFinal, SisaTotal),
     format('Sisa kartu di dalam deck: ~d', [SisaTotal]), nl,nl,
-
-<<<<<<< Updated upstream
     format('Giliran ~w, silahkan masukkan perintah!', [PemainPertama]), nl, !.
-=======
-    format('Giliran ~w', [PemainPertama]), nl, nl.
->>>>>>> Stashed changes
 
 panjang([], 0).
 panjang([_|T], L) :-
@@ -160,14 +152,9 @@ append_element([], Element, Element).
 append_element([Head|Tail], Element, [Head|NewTail]) :-
     append_element(Tail, Element, NewTail).
 
-<<<<<<< Updated upstream
-nextTurn :-
-=======
-
 pisahkan_terakhir([X], X, []) :- !.
 pisahkan_terakhir([H|T], Terakhir, [H|Sisa]) :-
     pisahkan_terakhir(T, Terakhir, Sisa).
-
 
 peluang_godsHand :-
     lcg(100, Rnd),
@@ -182,17 +169,12 @@ giliran_berikutnya :-
     endGame.
 giliran_berikutnya :-
     arah(kanan),
->>>>>>> Stashed changes
     retract(urutan_pemain([PemainSekarang | PemainLainnya])),    
     append_element(PemainLainnya, [PemainSekarang], UrutanBaru),
     assertz(urutan_pemain(UrutanBaru)),
     UrutanBaru = [PemainSelanjutnya | _],
     format('Giliran ~w telah selesai.', [PemainSekarang]), nl,
-<<<<<<< Updated upstream
-    format('Sekarang giliran: ~w!', [PemainSelanjutnya]), nl.
-
-
-=======
+    format('Sekarang giliran: ~w!', [PemainSelanjutnya]), nl,
     peluang_godsHand, !.
     
 giliran_berikutnya :-
@@ -227,7 +209,6 @@ inputPlayerkeN(N) :-
         assertz(pemain(Nama)),
         N1 is N - 1,
         inputPlayerkeN(N1)).
->>>>>>> Stashed changes
 
 /* ==========       Dinamik     ========== */
 :- dynamic(data_pemain/1).
@@ -235,9 +216,6 @@ inputPlayerkeN(N) :-
 :- dynamic(tangan/2).
 :- dynamic(draw_pile/1).
 :- dynamic(efek_aktif/1).
-<<<<<<< Updated upstream
-=======
-:- dynamic(data_pemain/1).
 :- dynamic(urutan_pemain/1).
 :- dynamic(seed/1).
 :- dynamic(temp_deck/2).
@@ -249,7 +227,6 @@ inputPlayerkeN(N) :-
 :- dynamic(arah/1).
 :- dynamic(status_UNI/1).
 :- dynamic(kartu_tersembunyi/2).
->>>>>>> Stashed changes
 
 /* ==========        Facts      ========== */
 
