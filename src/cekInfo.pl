@@ -1,5 +1,14 @@
+<<<<<<< Updated upstream
+hitung_elemen([], 0).
+hitung_elemen([_|Tail], Jumlah) :-
+    hitung_elemen(Tail, Jumlah_Sisa),
+    Jumlah is Jumlah_Sisa + 1.
 
 
+printplayer([], _).
+printplayer(DaftarAcak):-
+    printplayer(DaftarAcak, 1).
+=======
 tampilkan_pemain([], _).
 tampilkan_pemain([Pemain | SisaPemain], X) :-
     format('Nama pemain ~w: ~w~n', [X, Pemain]), 
@@ -10,23 +19,23 @@ tampilkan_pemain([Pemain | SisaPemain], X) :-
     ),
     X1 is X + 1,
     tampilkan_pemain(SisaPemain, X1).
+>>>>>>> Stashed changes
 
-cetak_urutan(_, [Pemain]) :- 
-    format(Pemain), nl, !.
-cetak_urutan(_ , []):- !.
-cetak_urutan(kanan, [Pemain | Sisa]) :-
-    write(Pemain), 
-    write(' -> '),
-    cetak_urutan(kanan, Sisa).
-
-cetak_urutan(kiri, [Pemain | Sisa]) :-
-    write(Pemain), write(' <- '),
-    cetak_urutan(kiri, Sisa).
+printplayer([Pemain | SisaPemain], X):-
+    format('Nama pemain ~w: ~w', [X,Pemain]),
+    tangan(Pemain, Index),
+    hitung_elemen(Index, Jumlah),
+    format('Jumlah kartu: ~w', [Jumlah]),
+    X1 is X+1,
+printplayer(SisaPemain, X1).
 
 cekInfo:-
-    (discard_pile(Pile) -> format('Kartu discard top: ~w~n', [Pile]) ; format('Pile kosong~n', [])),
-    arah(Arah),
-    urutan_pemain(DaftarAcak),
-    cetak_urutan(Arah, DaftarAcak),
-    tampilkan_pemain(DaftarAcak, 1).
-  
+    draw_pile(Pile),
+    format('kartu discard top: ~w', [Pile]),
+    daftarAcak(DaftarAcak),
+    format('Urutan pemain:~w', [DaftarAcak]),
+    printplayer(DaftarAcak).
+    
+giliran(Turn).
+
+

@@ -99,8 +99,6 @@ printPemain([[Skor, _JK, Nama]|Sisa], W):-
     W1 is W+1,
     printPemain(Sisa, W1).
     
-
-
 endGame:-
     simpan_kartu_pemain(Pemenang, []),
     urutan_pemain(Urut),
@@ -111,11 +109,3 @@ endGame:-
     urutkan_peringkat(List, Hasil),
     printPemain(Hasil, 1),
     format('Selamat, ~w menjadi pemenang!', [Pemenang]).
-
-
-
-
-
-
-
-

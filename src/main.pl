@@ -1,11 +1,20 @@
 /* ==========        Rules       ========== */
+
 :- include('ambilKartu.pl').
 :- include('lihatKartu.pl').
 :- include('cekInfo.pl').
 :- include('mainKartu.pl').
 :- include('tantang.pl').
+<<<<<<< Updated upstream
+=======
 :- include('endGame.pl').
 :- include('helper.pl').
+:- include('gameSaveLoad.pl').
+:- include('godsHand.pl').
+:- include('sembunyiKartu.pl').
+
+
+>>>>>>> Stashed changes
 /* ==========   1. Start Game    ========== */
 
 startGame :-
@@ -18,7 +27,7 @@ startGame :-
     write('======================================='), nl,
 
     write('======================================='), nl,
-    write('==========   Game Starts!    =========='),nl,nl,
+    write('==========   Game Start!     =========='),nl,nl,
     
     write('Masukkan jumlah pemain (2-4): '),
     read(N),
@@ -33,20 +42,21 @@ startGame :-
     tampilkan_pemain(DaftarAcak), nl,
 
     temp_kartu,
-    kumpulkan_deck(Deck_urut),
-    acak_deck(Deck_urut, Deck_acak),
+    kumpulkan_deck(DeckAwal),
 
     write('--- Membagikan Kartu ---'), nl, 
-    bagikan_kartu(DaftarAcak, Deck_acak, DeckSisaSetelahBagi),
+    bagikan_kartu(DaftarAcak, DeckAwal, DeckSisaSetelahBagi),
 
     discard_pile(DeckSisaSetelahBagi, DiscardAwal, DeckFinal),
-    assertz(sisa_deck(DeckFinal)),
-    assertz(efek_aktif(none)),
     format('Kartu di meja (Discard Pile): ~w', [DiscardAwal]), nl,
     panjang(DeckFinal, SisaTotal),
     format('Sisa kartu di dalam deck: ~d', [SisaTotal]), nl,nl,
 
+<<<<<<< Updated upstream
     format('Giliran ~w, silahkan masukkan perintah!', [PemainPertama]), nl, !.
+=======
+    format('Giliran ~w', [PemainPertama]), nl, nl.
+>>>>>>> Stashed changes
 
 panjang([], 0).
 panjang([_|T], L) :-
@@ -66,14 +76,6 @@ acak_pemain(Asli, [Terpilih|SisaAcak]) :-
     lcg(L, Indeks),
     ambil_elemen(Indeks, Asli, Terpilih, SisaAsli),
     acak_pemain(SisaAsli, SisaAcak).
-
-/* Kocok deck kartu menggunakan LCG */
-acak_deck([], []).
-acak_deck(Asli, [Terpilih | SisaAcak]) :-
-    panjang(Asli, L),
-    lcg(L, Indeks),
-    ambil_elemen(Indeks, Asli, Terpilih, SisaAsli),
-    acak_deck(SisaAsli, SisaAcak).
 
 ambil_elemen(0, [H|T], H, T) :- !.
 ambil_elemen(I, [H|T], Terpilih, [H|Sisa]) :-
@@ -158,23 +160,41 @@ append_element([], Element, Element).
 append_element([Head|Tail], Element, [Head|NewTail]) :-
     append_element(Tail, Element, NewTail).
 
+<<<<<<< Updated upstream
+nextTurn :-
+=======
 
 pisahkan_terakhir([X], X, []) :- !.
 pisahkan_terakhir([H|T], Terakhir, [H|Sisa]) :-
     pisahkan_terakhir(T, Terakhir, Sisa).
 
 
+peluang_godsHand :-
+    lcg(100, Rnd),
+    ( Rnd < 15 -> 
+        godsHand
+    ; 
+        true 
+    ).
+
 giliran_berikutnya :-
     simpan_kartu_pemain(_, []), !,
     endGame.
 giliran_berikutnya :-
     arah(kanan),
+>>>>>>> Stashed changes
     retract(urutan_pemain([PemainSekarang | PemainLainnya])),    
     append_element(PemainLainnya, [PemainSekarang], UrutanBaru),
     assertz(urutan_pemain(UrutanBaru)),
     UrutanBaru = [PemainSelanjutnya | _],
     format('Giliran ~w telah selesai.', [PemainSekarang]), nl,
-    format('Sekarang giliran: ~w!', [PemainSelanjutnya]), nl, !.
+<<<<<<< Updated upstream
+    format('Sekarang giliran: ~w!', [PemainSelanjutnya]), nl.
+
+
+=======
+    peluang_godsHand, !.
+    
 giliran_berikutnya :-
     arah(kiri),
     retract(urutan_pemain(ListLama)),
@@ -183,27 +203,16 @@ giliran_berikutnya :-
     assertz(urutan_pemain(UrutanBaru)),
     ListLama = [PemainSekarang | _],
     format('Giliran ~w telah selesai.', [PemainSekarang]), nl,
-    format('Sekarang giliran: ~w!', [PemainSelanjutnya]), nl, !.
+    format('Sekarang giliran: ~w!', [PemainSelanjutnya]), nl,
+    peluang_godsHand,  !.
+
 /* ==========        Turn       ========== */
 
-uni :-
-    write('Uni!').
-
-tangkap :-
-    write('tangkap').
 
 /* ==========     Misc       ========== */
 
 lihatCommand :-
     write('Tersedia: anukan').
-
-/* ==========     End Game    ========== */
-
-saveGame :-
-    write('Saved!').
-
-loadGame :-
-    write('Loaded!').
 
 /* ==========   Buat Sendiri    ==========*/
 inputPlayerkeN(0) :- !.
@@ -218,12 +227,16 @@ inputPlayerkeN(N) :-
         assertz(pemain(Nama)),
         N1 is N - 1,
         inputPlayerkeN(N1)).
+>>>>>>> Stashed changes
 
 /* ==========       Dinamik     ========== */
 :- dynamic(data_pemain/1).
 :- dynamic(giliran/1).
+:- dynamic(tangan/2).
 :- dynamic(draw_pile/1).
 :- dynamic(efek_aktif/1).
+<<<<<<< Updated upstream
+=======
 :- dynamic(data_pemain/1).
 :- dynamic(urutan_pemain/1).
 :- dynamic(seed/1).
@@ -234,6 +247,10 @@ inputPlayerkeN(N) :-
 :- dynamic(format/1).
 :- dynamic(kartu_efek/1).
 :- dynamic(arah/1).
+:- dynamic(status_UNI/1).
+:- dynamic(kartu_tersembunyi/2).
+>>>>>>> Stashed changes
+
 /* ==========        Facts      ========== */
 
 kartu(merah, angka(0)).
@@ -298,4 +315,3 @@ kartu(biru, draw_two).
 kartu(hitam, wild).
 kartu(hitam, wild_draw_four).
 kartu(hitam, mimic).
-arah(kanan).
