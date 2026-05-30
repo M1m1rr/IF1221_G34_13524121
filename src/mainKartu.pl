@@ -87,6 +87,10 @@ efek(kartu(_, mimic)):-
 efek(_):-
     giliran_berikutnya,!
 .
+mainkanKartu(_) :-
+    efek_aktif(Efek),
+    (Efek== draw_two ; Efek == wild_draw_four),
+    format('woi Lu kena efek ~w harus ambil kartu gabisa mainkan kartu~n', [Efek]), !.
 mainkanKartu(Index) :-
     urutan_pemain([Pemain|_]),
     simpan_kartu_pemain(Pemain, Indekskartu),
