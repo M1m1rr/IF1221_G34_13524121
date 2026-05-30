@@ -15,7 +15,8 @@
 
 startGame :-
     retractall(data_pemain(_)),
-    retractall(seed(_)), assertz(seed(123456789)),
+    random(67676767, 78787878, SeedAcak),
+    retractall(seed(_)), assertz(seed(SeedAcak)),
     retractall(urutan_pemain(_)),
     retractall(arah(_)), assertz(arah(kanan)),
 
@@ -39,10 +40,11 @@ startGame :-
     tampilkan_pemain(DaftarAcak), nl,
 
     temp_kartu,
-    kumpulkan_deck(DeckAwal),
+    kumpulkan_deck(Deck_urut),
+    acak_deck(Deck_urut, Deck_acak),
 
     write('--- Membagikan Kartu ---'), nl, 
-    bagikan_kartu(DaftarAcak, DeckAwal, DeckSisaSetelahBagi),
+    bagikan_kartu(DaftarAcak, Deck_acak, DeckSisaSetelahBagi),
 
     discard_pile(DeckSisaSetelahBagi, DiscardAwal, DeckFinal),
     format('Kartu di meja (Discard Pile): ~w', [DiscardAwal]), nl,
@@ -57,12 +59,21 @@ panjang([_|T], L) :-
 
 lcg(Max, Index) :-
     retract(seed(OldSeed)),
-    NextSeed is (1103515245 * OldSeed + 10001) mod 2147483647,
+    NextSeed is (19748448777 * OldSeed + 10001) mod 2147483647,
     assertz(seed(NextSeed)),
     Index is NextSeed mod Max.
 
+acak_deck([], []).
+acak_deck([Tunggal], [Tunggal]) :- !.
+acak_deck(Asli, [Terpilih | SisaAcak]) :-
+    panjang(Asli, L),
+    lcg(L, Indeks),
+    ambil_elemen(Indeks, Asli, Terpilih, SisaAsli),
+    acak_deck(SisaAsli, SisaAcak).
+
 /*pemain*/
 acak_pemain([], []).
+acak_pemain([Tunggal], [Tunggal]) :- !.
 acak_pemain(Asli, [Terpilih|SisaAcak]) :-
     panjang(Asli, L),
     lcg(L, Indeks),
