@@ -1,8 +1,14 @@
 /* Ini bonus ya woi */
+
 godsHand :-
     urutan_pemain(Urutan),
     (cek_syarat_godshand(Urutan) ->
-        eksekusi_godsHand(Urutan)
+        lcg(100, Rnd),
+        ( Rnd < 15 ->
+            eksekusi_godsHand(Urutan)
+        ;
+            true
+        )
     ;
         true 
     ).
