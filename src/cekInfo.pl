@@ -23,6 +23,10 @@ cetak_urutan(kiri, [Pemain | Sisa]) :-
 
 cekInfo:-
     (discard_pile(Pile) -> format('Kartu discard top: ~w~n', [Pile]) ; format('Pile kosong~n', [])),
+    team1(Anggota1),
+    team2(Anggota2),
+    format('Tim 1 : ~w ~n', [Anggota1]),
+    format('Tim 2 : ~w ~n', [Anggota2]),
     arah(Arah),
     urutan_pemain(DaftarAcak),
     cetak_urutan(Arah, DaftarAcak),

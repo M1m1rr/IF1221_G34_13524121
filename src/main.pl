@@ -12,6 +12,7 @@
 :- include('gameSaveLoad.pl').
 :- include('godsHand.pl').
 :- include('sembunyiKartu.pl').
+:- include('swapKartu.pl').
 
 /* ==========   1. Start Game    ========== */
 
@@ -30,7 +31,14 @@ startGame :-
 
     write('======================================='), nl,
     write('==========   Game Start!     =========='),nl,nl,
-    
+
+    write('Ada 2 Mode permainan'), nl,
+    write('1.Klasik'), nl,
+    write('2.turnamen'), nl,
+    read(Mode),
+    validasi_jumlah1(Mode, ValidM),
+    assertz(mode_main(ValidM)),
+    format('permainan dimulai dalam Mode ~w ~n', [ValidM]),
     write('Masukkan jumlah pemain (2-4): '),
     read(N),
     validasi_jumlah(N, ValidN),
@@ -42,7 +50,8 @@ startGame :-
     DaftarAcak = [PemainPertama|_],
     write('Urutan pemain: '), nl,
     tampilkan_pemain(DaftarAcak), nl,
-
+    jika_turnamen(Mode),
+  
     temp_kartu,
     kumpulkan_deck(Deck_urut),
     acak_deck(Deck_urut, Deck_acak),
@@ -245,6 +254,10 @@ inputPlayerkeN(N) :-
 :- dynamic(status_UNI/1).
 :- dynamic(kartu_tersembunyi/2).
 :- dynamic(discard_sebelumnya/1).
+:- dynamic(mode_main/1).
+:- dynamic(team1/1).
+:- dynamic(team2/1).
+:- dynamic(tim/2).
 
 /* ==========        Facts      ========== */
 

@@ -43,3 +43,50 @@ kembalikan_list_kartu([], []).
 kembalikan_list_kartu([Format|T], [Kartu|KartuT]) :-
     format_ke_kartu(Format, Kartu),
     kembalikan_list_kartu(T, KartuT).
+
+
+validasi_jumlah1(N, N) :- N >= 1, N =< 2, !.
+validasi_jumlah1(_, ValidN) :-
+    write('No, No, No'), nl,
+    write('MODE CUMAN ADA 2'), nl,
+    write('Masukkan Mode apa: '),
+    read(Baru), validasi_jumlah1(Baru, ValidN).
+
+
+
+bagitim([],[], []).
+bagitim([Pemain], [Pemain], []).
+bagitim([Pemain1, Pemain2| Sisa], [Pemain1|Sisa1], [Pemain2|Sisa2]):-
+    bagitim(Sisa,Sisa1, Sisa2).
+
+jika_turnamen(2):-
+    urutan_pemain(DaftarAcak),
+    bagitim(DaftarAcak, Tim1, Tim2),
+    infoteam(DaftarAcak),
+    write('Membentuk tim secara acak...'), nl,
+    assertz(team1(Tim1)),
+    assertz(team2(Tim2)),
+    format('Tim 1: ~w ~n', [Tim1]),
+    format('Tim 2: ~w ~n', [Tim2]).
+    
+
+
+jika_turnamen(1):- !.
+
+ infoteam([]).
+ infoteam([Pemain]):-
+    assertz(tim(Pemain, team1)).
+
+infoteam([Pemain1, Pemain2|Sisa]):-
+    assertz(tim(Pemain1, team1)),
+    assertz(tim(Pemain2, team2)),
+    infoteam(Sisa).
+
+tulis_semua_tim([]).
+tulis_semua_tim([Pemain | Sisa]) :-
+    (tim(Pemain, Tim) ->
+        write('tim('), writeq(Pemain), write('):'), writeq(Tim), write('.'), nl
+    ;
+        true
+    ),
+    tulis_semua_tim(Sisa).
