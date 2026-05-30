@@ -10,7 +10,7 @@ uni(Indeks) :-
             assertz(sisa_deck(SisaDeck)),
             retract(simpan_kartu_pemain(PemainAktif, ListKartuTangan)),
             assertz(simpan_kartu_pemain(PemainAktif, [KartuPenalti | ListKartuTangan])),
-            retractall(status_uni(PemainAktif, _)),
+            retractall(status_UNI(PemainAktif, _)),
             giliran_berikutnya, !
         ;
             discard_pile(KartuMeja),
@@ -22,14 +22,10 @@ uni(Indeks) :-
                 KartuPilihan = kartu(Warna, Jenis),
                 format('~w memainkan kartu: ~w-~w.~n', [PemainAktif, Warna, Jenis]),
                 format('~w menyerukan UNI!~n', [PemainAktif]),
-                retractall(status_uni(PemainAktif, _)),
-                assertz(status_uni(PemainAktif, sudah_uni)),
+                retractall(status_UNI(PemainAktif, _)),
+                assertz(status_UNI(PemainAktif, sudah_uni)),
                 efek(KartuPilihan),
                 !
-            ;
-                write('Kartu tidak cocok! Silakan pilih kartu lain.'), nl, fail
             )
         )
-    ;
-        write('Nomor urut kartu tidak valid!'), nl, fail
     ).

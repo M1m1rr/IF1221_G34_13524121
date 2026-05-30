@@ -17,11 +17,11 @@ proses_tangkap(Penuduh, Target) :-
             format('Ada kartu yang disembunyikan oleh ~w!~n', [Target]),
             format('Aowkaowkoakw ~w salah tangkap! dapat 1 kartu penalti.~n', [Penuduh]),
             drawN(Penuduh, 1, _)
-        ; status_uni(Target, lupa_uni) ->
+        ; status_UNI(Target, lupa_uni) ->
             format('Tangkap! ~w tertangkap belum UNI!~n', [Target]),
             format('~w dapat 2 kartu penalti.~n~n', [Target]),
             drawN(Target, 2, _),
-            retractall(status_uni(Target, _)) 
+            retractall(status_UNI(Target, _)) 
         ;
             format('Aowkawokaowk ~w sudah UNI!~n', [Target]),
             format('~w dapat 1 kartu penalti!~n', [Penuduh]),

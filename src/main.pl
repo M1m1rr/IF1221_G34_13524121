@@ -6,6 +6,7 @@
 :- include('cekInfo.pl').
 :- include('mainKartu.pl').
 :- include('tantang.pl').
+:- include('uni.pl').
 :- include('endGame.pl').
 :- include('helper.pl').
 :- include('gameSaveLoad.pl').
@@ -19,6 +20,8 @@ startGame :-
     random(67676767, 78787878, SeedAcak),
     retractall(seed(_)), assertz(seed(SeedAcak)),
     retractall(urutan_pemain(_)),
+    asserta(status_game(normal)),
+    retractall(status_UNI(_, _)),
     retractall(arah(_)), assertz(arah(kanan)),
 
     write('======================================='), nl,
@@ -48,6 +51,10 @@ startGame :-
     bagikan_kartu(DaftarAcak, Deck_acak, DeckSisaSetelahBagi),
 
     discard_pile(DeckSisaSetelahBagi, DiscardAwal, DeckFinal),
+    retractall(sisa_deck(_)),
+    assertz(sisa_deck(DeckFinal)),
+    retractall(efek_aktif(_)),
+    assertz(efek_aktif(none)),
     format('Kartu di meja (Discard Pile): ~w', [DiscardAwal]), nl,
     panjang(DeckFinal, SisaTotal),
     format('Sisa kartu di dalam deck: ~d', [SisaTotal]), nl,nl,
@@ -225,6 +232,7 @@ inputPlayerkeN(N) :-
 :- dynamic(tangan/2).
 :- dynamic(draw_pile/1).
 :- dynamic(efek_aktif/1).
+:- dynamic(status_game/1).
 :- dynamic(urutan_pemain/1).
 :- dynamic(seed/1).
 :- dynamic(temp_deck/2).
@@ -236,6 +244,7 @@ inputPlayerkeN(N) :-
 :- dynamic(arah/1).
 :- dynamic(status_UNI/1).
 :- dynamic(kartu_tersembunyi/2).
+:- dynamic(discard_sebelumnya/1).
 
 /* ==========        Facts      ========== */
 
