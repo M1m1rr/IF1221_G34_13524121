@@ -2,6 +2,7 @@
 
 :- include('ambilKartu.pl').
 :- include('lihatKartu.pl').
+:- include('lihatCommand.pl').
 :- include('cekInfo.pl').
 :- include('mainKartu.pl').
 :- include('tantang.pl').
