@@ -3,7 +3,7 @@ tantang :-
     ->urutan_pemain([Penantang, Pelaku | _]),
     simpan_kartu_pemain(Pelaku, TanganPelaku),
     discard_sebelumnya(kartu(Warna, Tipe)),
-    (adaKartuCocok(TanganPelaku, Warna, TipeDiscard)
+    (adaKartuCocok(TanganPelaku, Warna, Tipe)
         ->format('Tantangan berhasil! ~w mendapatkan 4 kartu.~n', [Pelaku]),
         drawN(Pelaku, 4, _),
         retract(efek_aktif(_)),

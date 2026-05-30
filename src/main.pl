@@ -175,6 +175,14 @@ pisahkan_terakhir([X], X, []) :- !.
 pisahkan_terakhir([H|T], Terakhir, [H|Sisa]) :-
     pisahkan_terakhir(T, Terakhir, Sisa).
 
+peluang_godsHand :-
+    lcg(100, Rnd),
+    ( Rnd < 15 -> 
+        godsHand
+    ; 
+        true 
+    ).
+
 giliran_berikutnya :-
     simpan_kartu_pemain(_, []), !,
     endGame.
@@ -186,7 +194,7 @@ giliran_berikutnya :-
     UrutanBaru = [PemainSelanjutnya | _],
     format('Giliran ~w telah selesai.', [PemainSekarang]), nl,
     format('Sekarang giliran: ~w!', [PemainSelanjutnya]), nl,
-    !.
+    peluang_godsHand, !.
     
 giliran_berikutnya :-
     arah(kiri),
@@ -197,7 +205,7 @@ giliran_berikutnya :-
     ListLama = [PemainSekarang | _],
     format('Giliran ~w telah selesai.', [PemainSekarang]), nl,
     format('Sekarang giliran: ~w!', [PemainSelanjutnya]), nl,
-    !.
+    peluang_godsHand,  !.
 
 /* ==========        Turn       ========== */
 
