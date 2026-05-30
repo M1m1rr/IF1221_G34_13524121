@@ -51,6 +51,10 @@ startGame :-
     bagikan_kartu(DaftarAcak, Deck_acak, DeckSisaSetelahBagi),
 
     discard_pile(DeckSisaSetelahBagi, DiscardAwal, DeckFinal),
+    retractall(sisa_deck(_)),
+    assertz(sisa_deck(DeckFinal)),
+    retractall(efek_aktif(_)),
+    assertz(efek_aktif(none)),
     format('Kartu di meja (Discard Pile): ~w', [DiscardAwal]), nl,
     panjang(DeckFinal, SisaTotal),
     format('Sisa kartu di dalam deck: ~d', [SisaTotal]), nl,nl,
@@ -240,6 +244,7 @@ inputPlayerkeN(N) :-
 :- dynamic(arah/1).
 :- dynamic(status_UNI/1).
 :- dynamic(kartu_tersembunyi/2).
+:- dynamic(discard_sebelumnya/1).
 
 /* ==========        Facts      ========== */
 

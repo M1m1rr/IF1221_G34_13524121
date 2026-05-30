@@ -2,8 +2,7 @@ tantang :-
     (efek_aktif(wild_draw_four)
     ->urutan_pemain([Penantang, Pelaku | _]),
     simpan_kartu_pemain(Pelaku, TanganPelaku),
-    warna_aktif(Warna),
-    discard_pile(kartu(_, TipeDiscard)),
+    discard_sebelumnya(kartu(Warna, Tipe)),
     (adaKartuCocok(TanganPelaku, Warna, TipeDiscard)
         ->format('Tantangan berhasil! ~w mendapatkan 4 kartu.~n', [Pelaku]),
         drawN(Pelaku, 4, _),

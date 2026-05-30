@@ -102,6 +102,8 @@ mainkanKartu(Index) :-
     simpan_kartu_pemain(Pemain, Indekskartu),
     cari_kartu_ke(Index, Indekskartu, Kartupemain ), 
     discard_pile(Kartumeja),
+    retractall(discard_sebelumnya(_)),
+    assertz(discard_sebelumnya(Kartumeja)),
     cocok(Kartupemain, Kartumeja),
     (kartu_aksi(Kartupemain)->
         retractall(kartu_efek(_)),
