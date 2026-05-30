@@ -8,6 +8,12 @@ list_warna(X, [X|_]) :- !.
 list_warna(X, [_|T]) :-
     list_warna(X, T).
 
+ambil_kartu_ke_n(1, [Kepala | Ekor], Kepala, Ekor) :- !.
+ambil_kartu_ke_n(Indeks, [Kepala | Ekor], KartuTerpilih, [Kepala | SisaKartu]) :-
+    Indeks > 1,
+    IndeksBerikutnya is Indeks - 1,
+    ambil_kartu_ke_n(IndeksBerikutnya, Ekor, KartuTerpilih, SisaKartu).
+
 cocok(kartu(Warna, _), kartu(Warna, _)) :- !.
 cocok(kartu(_, Sama), kartu(_, Sama)):- !.
 cocok(kartu(hitam, _), kartu(_, _)):-!.

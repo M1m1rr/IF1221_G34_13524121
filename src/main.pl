@@ -6,6 +6,7 @@
 :- include('cekInfo.pl').
 :- include('mainKartu.pl').
 :- include('tantang.pl').
+:- include('uni.pl').
 :- include('endGame.pl').
 :- include('helper.pl').
 :- include('gameSaveLoad.pl').
@@ -138,7 +139,7 @@ tujuh_kartu(N, DeckIn, [Kartu|SisaTangan], DeckOut) :-
 
 bagikan_kartu([], Deck, Deck).
 bagikan_kartu([Pemain|SisaPemain], DeckLama, DeckFinal) :-
-    tujuh_kartu(7, DeckLama, ListKartu, DeckBaru),
+    tujuh_kartu(2, DeckLama, ListKartu, DeckBaru),
     assertz(simpan_kartu_pemain(Pemain, ListKartu)),
     format('Daftar kartu ~w : ~w', [Pemain, ListKartu]), nl, nl,
     bagikan_kartu(SisaPemain, DeckBaru, DeckFinal).
