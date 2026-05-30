@@ -32,6 +32,7 @@ efek(kartu(_, wild)):-
     giliran_berikutnya, !.
 
 efek(kartu(_, skip)):-
+    retractall(status_game(_)), assertz(status_game(normal)),
     arah(Arah),
     retract(urutan_pemain(UrutanLama)),
     (Arah == kanan ->
@@ -49,11 +50,14 @@ efek(kartu(_, skip)):-
 
 efek(kartu(_, draw_two)):-
     write('pemain berikutnya terkena draw 2.~n'), 
+    retractall(status_game(_)), assertz(status_game(terkena_draw_two)),
     retractall(efek_aktif(_)),
     assertz(efek_aktif(draw_two)),
     giliran_berikutnya,!.
+    
 efek(kartu(_,wild_draw_four)):-
     write('pemain berikutnya terkena draw 4.~n'),
+    retractall(status_game(_)), assertz(status_game(terkena_draw_four)),
     retractall(efek_aktif(_)),
     assertz(efek_aktif(wild_draw_four)),
     write('Pilih warna baru (merah/kuning/hijau/biru): '),
@@ -89,8 +93,8 @@ efek(kartu(_, mimic)):-
     ).
     
 
-
 efek(_):-
+    retractall(status_game(_)), assertz(status_game(normal)),
     giliran_berikutnya,!
 .
 mainkanKartu(Index) :-
