@@ -19,6 +19,8 @@ startGame :-
     random(67676767, 78787878, SeedAcak),
     retractall(seed(_)), assertz(seed(SeedAcak)),
     retractall(urutan_pemain(_)),
+    asserta(status_game(normal)),
+    retractall(status_UNI(_, _)),
     retractall(arah(_)), assertz(arah(kanan)),
 
     write('======================================='), nl,
@@ -225,6 +227,7 @@ inputPlayerkeN(N) :-
 :- dynamic(tangan/2).
 :- dynamic(draw_pile/1).
 :- dynamic(efek_aktif/1).
+:- dynamic(status_game/1).
 :- dynamic(urutan_pemain/1).
 :- dynamic(seed/1).
 :- dynamic(temp_deck/2).
