@@ -49,14 +49,14 @@ efek(kartu(_, skip)):-
 /* aku rombak skip ya ucup*/
 
 efek(kartu(_, draw_two)):-
-    write('pemain berikutnya terkena draw 2.~n'), 
+    write('pemain berikutnya terkena draw 2.'), nl,
     retractall(status_game(_)), assertz(status_game(terkena_draw_two)),
     retractall(efek_aktif(_)),
     assertz(efek_aktif(draw_two)),
     giliran_berikutnya,!.
     
 efek(kartu(_,wild_draw_four)):-
-    write('pemain berikutnya terkena draw 4.~n'),
+    write('pemain berikutnya terkena draw 4.'),nl,
     retractall(status_game(_)), assertz(status_game(terkena_draw_four)),
     retractall(efek_aktif(_)),
     assertz(efek_aktif(wild_draw_four)),

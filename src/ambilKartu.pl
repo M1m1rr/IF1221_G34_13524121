@@ -6,7 +6,7 @@ ambilKartu :-
     retract(efek_aktif(_)),
     assertz(efek_aktif(none)),
     printAmbil(Pemain, N, KartuDiambil),
-    giliran_berikutnya.
+    giliran_berikutnya,!.
 
 jumlahAmbil(none, 1).
 jumlahAmbil(draw_two, 2).

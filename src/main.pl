@@ -153,7 +153,7 @@ is_aksi(skip).
 is_aksi(reverse).
 is_aksi(draw_two).
 is_aksi(wild).
-is_aksi(draw_four).
+is_aksi(wild_draw_four).
 is_aksi(mimic).
 
 discard_pile(DeckLama, KartuTerbuang, DeckBaru) :-
