@@ -204,9 +204,6 @@ giliran_berikutnya :-
 
 /* ==========     Misc       ========== */
 
-lihatCommand :-
-    write('Tersedia: anukan').
-
 /* ==========   Buat Sendiri    ==========*/
 inputPlayerkeN(0) :- !.
 inputPlayerkeN(N) :-
