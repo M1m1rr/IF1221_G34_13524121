@@ -17,7 +17,8 @@ tantang :-
         )
     ;write('Tidak ada wild_draw_four yang bisa ditantang.'), nl
     ).
-
+adaKartuCocok([kartu(hitam, wild_draw_four)|Rest], Warna, Tipe) :- !,
+    adaKartuCocok(Rest, Warna, Tipe).
 adaKartuCocok([kartu(W, _)|_], W, _) :- !.
 adaKartuCocok([kartu(_, angka(N))|_], _, angka(N)) :- !.
 adaKartuCocok([_|Rest], Warna, Tipe) :-
