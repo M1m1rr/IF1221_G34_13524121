@@ -6,6 +6,7 @@
 :- include('cekInfo.pl').
 :- include('mainKartu.pl').
 :- include('tantang.pl').
+:- include('uni.pl').
 :- include('endGame.pl').
 :- include('helper.pl').
 :- include('gameSaveLoad.pl').
