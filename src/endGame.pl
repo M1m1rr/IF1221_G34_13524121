@@ -113,8 +113,19 @@ teamscore([[Skor, JK, Pemain]|Sisa], Tim, TotalTim, TotalJK) :-
     ).
 
 
-    
+endGame :-
+    sisa_deck([]),
+    write('Permainan selesai karena Draw Pile habis!'), nl,
+    urutan_pemain(Urut),
+    % Tampilkan poin untuk menentukan pemenang berdasarkan skor terkecil
+    showallPointPemain(Urut),
+    listSkor(Urut, List),
+    urutkan_peringkat(List, Hasil),
+    printPemain(Hasil, 1),
+    halt(0) ,! .
+     
 endGame:-
+    \+ sisa_deck([])
     simpan_kartu_pemain(Pemenang, []),
     urutan_pemain(Urut),
     mode_main(Mode),

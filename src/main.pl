@@ -193,6 +193,10 @@ peluang_godsHand :-
     ).
 
 giliran_berikutnya :-
+    sisa_deck([]), !,
+    write('Draw pile habis! Permainan berakhir dengan seri atau penentuan berdasarkan poin.'), nl,
+    endGame.
+giliran_berikutnya :-
     simpan_kartu_pemain(_, []), !,
     endGame.
 giliran_berikutnya :-
