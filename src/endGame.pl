@@ -84,6 +84,7 @@ showallPointPemain([Pemain|Sisa]):-
     showallPointPemain(Sisa).
 
 printPemain([], _).
+
 printPemain([[Skor, JK, Nama]|Sisa], W):-
     format('~w. ~w (~w poin, ~w sisa kartu)~n', [W, Nama, Skor, JK]),
     W1 is W+1,
@@ -125,19 +126,21 @@ endGame:-
         listSkor(Urut, List),
         urutkan_peringkat(List, Hasil),
         printPemain(Hasil, 1),
-        format('Selamat, ~w menjadi pemenang!', [Pemenang]),
+        format('Selamat, ~w menjadi pemenang! ~n', [Pemenang])
     ;
-        format('Permainan selesai! ~w menghabiskan semua kartunya!~n', [Pemenang]),
-        format('Berikut perhitungan poin sisa kartu~n', []),
-        showallPointPemain(Urut),
-        listSkor(Urut, List),
-        teamscore(List, team1, Skorteam1, TOTJK1),
-        teamscore(List, team2, Skorteam2, TOTJK2),
-        Listtim = [[Skorteam1, TOTJK1, team1], [Skorteam2, TOTJK2, team2 ]],
-        urutkan_peringkat(Listtim, Hasiltim),
-        printPemain(Hasiltim, 1),
-        Hasiltim = [[_, _, Juara]|_],
-        format('Selamat, ~w menjadi pemenang!~n', [Juara]),
+        (
+            format('Permainan selesai! ~w menghabiskan semua kartunya!~n', [Pemenang]),
+            format('Berikut perhitungan poin sisa kartu~n', []),
+            showallPointPemain(Urut),
+            listSkor(Urut, List),
+            teamscore(List, team1, Skorteam1, TOTJK1),
+            teamscore(List, team2, Skorteam2, TOTJK2),
+            Listtim = [[Skorteam1, TOTJK1, team1], [Skorteam2, TOTJK2, team2 ]],
+            urutkan_peringkat(Listtim, Hasiltim),
+            printPemain(Hasiltim, 1),
+            Hasiltim = [[_, _, Juara]|_],
+            format('Selamat, ~w menjadi pemenang!~n', [Juara])
+        )
     ),
     halt(0).
 
