@@ -7,7 +7,7 @@ lihatKartu :-
         printTersembunyi(ListSembunyi, NextN)
     ;
         true
-    ).
+    ), !.
 
 printTangan([], N, N).
 printTangan([Kartu|Rest], N, FinalN) :-
