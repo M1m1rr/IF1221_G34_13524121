@@ -9,6 +9,16 @@ saveGame :-
     read(InputName),
     tambah_txt(InputName, FileName),
     tell(FileName),
+    mode_main(Mode),
+    write('mode_main:'), writeq(Mode), write('.'), nl,
+    (Mode =:= 2 ->
+        (team1(Tim1) -> write('team1:'), writeq(Tim1), write('.'), nl ; true),
+        (team2(Tim2) -> write('team2:'), writeq(Tim2), write('.'), nl ; true),
+        urutan_pemain(UrutanPemain),
+        tulis_semua_tim(UrutanPemain)
+    ; 
+        true 
+    ),
     urutan_pemain(Urutan),
     write('urutan_pemain:'), writeq(Urutan), write('.'), nl,
     Urutan = [Giliran | _],
@@ -18,11 +28,16 @@ saveGame :-
     write('discard_top:'), writeq(DiscardFormat), write('.'), nl,
     DiscardTop = kartu(WarnaAktif, _),
     write('warna_aktif:'), writeq(WarnaAktif), write('.'), nl,
+    sisa_deck(Deck),
+    ubah_list_kartu(Deck, DeckFormat),
+    write('sisa_deck:'), writeq(DeckFormat), write('.'), nl,
+    seed(Seed),
+    write('seed:'), writeq(Seed), write('.'), nl,
     arah(Arah),
     write('arah_permainan:'), writeq(Arah), write('.'), nl,
     write('status_UNI:[].'), nl,
     tulis_semua_kartu(Urutan),
-    write('Data Kartu Tersembunyi: '), nl,
+    /*write('data kartu tersembunyi: '), nl, */
     tulis_semua_kartu_tersembunyi(Urutan),
     told, 
     format('Saved to ~w.~n !', [FileName]).
@@ -61,6 +76,11 @@ mulai_load(FileName) :-
     retractall(discard_pile(_)),
     retractall(arah(_)),
     retractall(simpan_kartu_pemain(_, _)),
+    retractall(kartu_tersembunyi(_, _)),
+    retractall(mode_main(_)),
+    retractall(team1(_)),
+    retractall(team2(_)),
+    retractall(tim(_, _)),
     baca_file_state,
     seen,
     retractall(efek_aktif(_)),
@@ -79,6 +99,7 @@ proses_term(Term) :-
     proses_state(Term),
     baca_file_state.
 
+
 proses_state(urutan_pemain : ListUrutan) :- assertz(urutan_pemain(ListUrutan)).
 proses_state(giliran : _) :- true.
 proses_state(discard_top : KartuFormat) :- 
@@ -90,6 +111,14 @@ proses_state(status_UNI : _) :- true.
 proses_state(kartu(Pemain) : ListFormat) :- 
     kembalikan_list_kartu(ListFormat, ListKartu),
     assertz(simpan_kartu_pemain(Pemain, ListKartu)).
+proses_state(mode_main : Mode) :- 
+    assertz(mode_main(Mode)).
+proses_state(team1 : ListTeam1) :- 
+    assertz(team1(ListTeam1)).
+proses_state(team2 : ListTeam2) :- 
+    assertz(team2(ListTeam2)).
+proses_state(tim(Pemain) : Tim) :- 
+    assertz(tim(Pemain, Tim)).
 proses_state(_) :- true.
 
 /*buat hide card y*/
