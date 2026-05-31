@@ -19,14 +19,7 @@ cocok(kartu(_, Sama), kartu(_, Sama)):- !.
 cocok(kartu(hitam, _), kartu(_, _)):-!.
 
 efek(kartu(_, wild)):-
-    write('Pilih warna baru (merah/kuning/hijau/biru): '),
-    read(Input),
-    (list_warna(Input, [merah, kuning, hijau, biru]) -> 
-        Warna = Input,
-        format('Warna diubah menjadi ~w.~n', [Warna])
-    ; 
-        write('Warna tidak valid!'), nl, efek(kartu(_, wild))
-    ),
+   pilih_warna_wild(Warna), 
     retract(discard_pile(_)),
     assertz(discard_pile(kartu(Warna, wild))),
     giliran_berikutnya, !.
@@ -60,14 +53,7 @@ efek(kartu(_,wild_draw_four)):-
     retractall(status_game(_)), assertz(status_game(terkena_draw_four)),
     retractall(efek_aktif(_)),
     assertz(efek_aktif(wild_draw_four)),
-    write('Pilih warna baru (merah/kuning/hijau/biru): '),
-    read(Input),
-    (list_warna(Input, [merah, kuning, hijau, biru]) -> 
-        Warna = Input,
-        format('Warna diubah menjadi ~w.~n', [Warna])
-    ; 
-        write('Warna tidak valid!'), nl, efek(kartu(_, wild))
-    ),
+    pilih_warna_wild(Warna),
     retract(discard_pile(_)),
     assertz(discard_pile(kartu(Warna, wild_draw_four))),
     giliran_berikutnya, !.

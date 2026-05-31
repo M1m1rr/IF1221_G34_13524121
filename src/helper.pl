@@ -90,3 +90,15 @@ tulis_semua_tim([Pemain | Sisa]) :-
         true
     ),
     tulis_semua_tim(Sisa).
+
+
+    pilih_warna_wild(WarnaFinal) :-
+    write('Pilih warna baru (merah/kuning/hijau/biru): '),
+    read(Input),
+    (list_warna(Input, [merah, kuning, hijau, biru]) -> 
+        WarnaFinal = Input,
+        format('Warna diubah menjadi ~w.~n', [WarnaFinal])
+    ; 
+        write('Warna tidak valid!'), nl, 
+        pilih_warna_wild(WarnaFinal) % Ulangi hanya helper ini, jangan efek kartunya
+    ).
