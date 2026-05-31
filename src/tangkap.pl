@@ -2,7 +2,7 @@ tangkap(Target) :-
     urutan_pemain([Penuduh | _]),
     ( Penuduh == Target ->
         write('apa coba?'), nl
-    ; \+ data_pemain(Target) ->
+    ; \+ simpan_kartu_pemain(Target, _) ->
         format('~w ga ikut main wo ~n', [Target])
     ; 
         proses_tangkap(Penuduh, Target)

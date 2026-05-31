@@ -1,4 +1,4 @@
-/*ini bonus ya woilah  */
+/*ini bonus ya woilah mirz*/
 
 sembunyikanKartu(NomorUrut) :-
     urutan_pemain([Pemain|_]),
@@ -38,17 +38,12 @@ tampilkanKartu :-
         write('Kamu tidak punya kartu tersembunyi!'), nl
     ).
 
-
-/* tambahin juga tangkepnya */
-
-
-
 tangkap(Target) :-
     urutan_pemain([Penuduh | _]),
     (Penuduh == Target ->
         write('apa coba?'), nl
     ;
-        data_pemain(Target) ->
+        simpan_kartu_pemain(Target, _) ->
             proses_tangkap(Penuduh, Target)
         ;
             format('~w gak ikut main wo ~n', [Target])
