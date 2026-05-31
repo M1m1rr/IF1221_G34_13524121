@@ -10,7 +10,7 @@ tampilkan_pemain([Pemain | SisaPemain], X) :-
     tampilkan_pemain(SisaPemain, X1).
 
 cetak_urutan(_, [Pemain]) :- 
-    format(Pemain), nl, !.
+    write(Pemain), nl, !.
 cetak_urutan(_ , []):- !.
 cetak_urutan(kanan, [Pemain | Sisa]) :-
     write(Pemain), 
