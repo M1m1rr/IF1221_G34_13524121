@@ -53,6 +53,11 @@ efek(kartu(_,wild_draw_four)):-
     retractall(status_game(_)), assertz(status_game(terkena_draw_four)),
     retractall(efek_aktif(_)),
     assertz(efek_aktif(wild_draw_four)),
+
+    urutan_pemain([PelakuAsli | _]),
+    retractall(pelaku_wild(_)),
+    assertz(pelaku_wild(PelakuAsli)),
+    
     pilih_warna_wild(Warna),
     retract(discard_pile(_)),
     assertz(discard_pile(kartu(Warna, wild_draw_four))),

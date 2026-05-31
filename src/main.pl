@@ -258,6 +258,7 @@ inputPlayerkeN(N) :-
 :- dynamic(team1/1).
 :- dynamic(team2/1).
 :- dynamic(tim/2).
+:- dynamic(pelaku_wild/1).
 
 /* ==========        Facts      ========== */
 
